@@ -2,6 +2,7 @@
 <html>
 
   <head>
+  <title>CourseMate | iarasoft</title>
     <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/add_School_main.less.css" class="main-less">
     <meta charset="UTF-8">
@@ -23,7 +24,7 @@
 		$country.change(function(e){
            
 		   //alert($country.val())
-		   
+			   
 		   $.ajax({
 			   			url : $__url_ ,
 						data: { method:"getInstitution", country:$country.val(), },

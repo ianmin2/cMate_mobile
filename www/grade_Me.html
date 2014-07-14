@@ -1,0 +1,28 @@
+<script src="js/jquery.min.js"></script>
+<script src="js/doAuth.js"></script>
+<Script>
+
+	if(localStorage.getItem("a") == ""){getGrading()}
+	
+	function getSubjects(){
+		
+		$.ajax({
+			url: $__url_,
+			data: {method: "getMyCourses", institution: localStorage.getItem("inst"), major: localStorage.getItem("major"), id: localStorage.getItem("id")},
+			dataType:"jsonp",
+			success: function(resp){
+				
+				$_done = resp['data']['command']['done'];
+				localStorage.setItem("done_subs", JSON.stringify($_done));
+				console.log(resp['data']['message']);
+				console.log(resp['data']['command']['done']);
+			}	
+		});
+		
+	}
+	
+	getSubjects();
+	
+	
+
+</script>

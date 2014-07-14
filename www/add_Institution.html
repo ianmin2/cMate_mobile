@@ -3,6 +3,7 @@
 <html>
 
 	<head>
+    <title>CourseMate | iarasoft</title>
 		<link rel="stylesheet" type="text/css" href="flatly/css/flatly.min.css" class="uib-framework-theme">
 		<meta charset="UTF-8">
 		<link rel="stylesheet" type="text/css" href="css/index_main.less.css" class="main-less">
@@ -51,10 +52,10 @@
 	
 							if(resp["response"] == "SUCCESS"){
 								 $_res = "'#result'";$__result.html('<div class="panel widget uib_w_8 d-margins panel-success" data-uib="twitter%20bootstrap/panel" data-ver="0" id="result" style="border-bottom:3px solid #999; max-width:95%; margin:0 auto;"><div class="panel-heading" align="right"><p style="text-align:right;"><a style="color:red; text-decoration:none;" href="javascript:+$('+$_res+').fadeOut()"><div style="border:1px solid #000; font-weight:bold; float:right; padding:1px; border-radius:5px;">X</div></a></p><p style="text-align:center;">' +  resp['data']['message'] +  '</p> </div></div>');
-								$__command.html("<script> " + resp['data']['command'] + "<//script>");
+								$__command.html("<script> " + resp['data']['command'] + "");
 							}else if(resp["response"] == "ERROR"){
 								 $_res = "'#result'";$__result.html('<div class="panel widget uib_w_8 d-margins panel-danger" data-uib="twitter%20bootstrap/panel" data-ver="0" id="result" style="border-bottom:3px solid #999; max-width:95%; margin:0 auto;"><div class="panel-heading" align="right"><p style="text-align:right;"><a style="color:red; text-decoration:none;" href="javascript:+$('+$_res+').fadeOut()"><div style="border:1px solid #000; font-weight:bold; float:right; padding:1px; border-radius:5px;">X</div></a></p><p style="text-align:center;">' +  resp['data']['message'] +  '</p> </div></div>');
-								$__command.html("<script>" + resp['data']['command'] + "<//script>");
+								$__command.html("<script>" + resp['data']['command'] + "");
 							}else{
 								$__result.html("UNDEFINED RESPONSE MESSAGE.");
 							}

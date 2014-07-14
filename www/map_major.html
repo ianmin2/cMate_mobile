@@ -2,6 +2,7 @@
 <html>
 
   <head>
+  <title>CourseMate | iarasoft</title>
     <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/map_major_main.less.css" class="main-less">
     <meta charset="UTF-8">
@@ -20,25 +21,24 @@
 	$(function(){
 			
 		 $.ajax({
-				
-						url : 'http://localhost/courses/php/CMBasics_proc.php',
+						url : $__url_,
 						data: { method:"getInstCourses", institution:localStorage.getItem("inst") },
 						dataType:'jsonp',
-						success: function(courDat){	
+						success: function(resp){	
 						
-								if(courDat["response"] == "ERROR"){
+								if(resp["response"] == "ERROR"){
 									
 									  $_res = "'#result'";
-								$__result.html('<div class="panel widget uib_w_8 d-margins panel-success" data-uib="twitter%20bootstrap/panel" data-ver="0" id="result" style="border-bottom:3px solid #999; max-width:95%; margin:0 auto;"><div class="panel-heading" align="right"><p style="text-align:right;"><a style="color:red; text-decoration:none;" href="javascript:+$('+$_res+').fadeOut()"><div style="border:1px solid #000; font-weight:bold; float:right; padding:1px; border-radius:5px;">X</div></a></p><p style="text-align:center;">' +  resp['data']['message'] +  '</p> </div></div>');
-									$__command.html(courDat['data']['command']);
+								$__result.html('<div class="panel widget uib_w_8 d-margins panel-danger" data-uib="twitter%20bootstrap/panel" data-ver="0" id="result" style="border-bottom:3px solid #999; max-width:95%; margin:0 auto;"><div class="panel-heading" align="right"><p style="text-align:right;"><a style="color:red; text-decoration:none;" href="javascript:+$('+$_res+').fadeOut()"><div style="border:1px solid #000; font-weight:bold; float:right; padding:1px; border-radius:5px;">X</div></a></p><p style="text-align:center;">' +  resp['data']['message'] +  '</p> </div></div>');
+									$__command.html(resp['data']['command']);
 									
-								}else if(courDat["response"] == "SUCCESS"){
+								}else if(resp["response"] == "SUCCESS"){
 									
-									$_courses = courDat["data"]["message"]
+									$_courses = resp["data"]["message"]
 																		
 									 $madeList = makeList($_courses);
 										$("#generated").html($madeList);
-										$__command.html(courDat['data']['command']);
+										$__command.html(resp['data']['command']);
 									
 								}else{
 									$__result.html("UNDEFINED RESPONSE MESSAGE.");

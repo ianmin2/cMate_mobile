@@ -1,10 +1,162 @@
-//$__url_ = 'http://ianmin2.tk/insy214/php/CMBasics_proc.php';
-$__url_ = "http://127.0.0.1/courses/php/CMBasics_proc.php";
+var js = document.createElement("script");
+var css = document.createElement("link");
+js.type = "text/javascript";
+js.src 	= "`mmenu/js/jquery.mmenu.min.js";
+css.rel	= "stylesheet";
+css.type= "text/css";
+css.href= "mmenu/css/jquery.mmenu.css";
+
+
+ //$__url_ = 'http://ianmin2.tk/insy214/php/CMBasics_proc.php';
+ $__url_ = "http://eleanor/courses/php/CMBasics_proc.php";
 $(function(){
 	$__result 			= $("#rr");
 	$__command			= $("#command"); 
+	
+document.body.appendChild(js);
+document.body.appendChild(css);
 	//$("head").append("<link rel='stylesheet' href='style/style.css' >");	
 });
+
+	function getGrading(){
+		
+		$.ajax({
+			url:$__url_,
+			data:{method: "loadGrades" ,institution : localStorage.getItem("inst")},
+			dataType:"jsonp",
+			success: function(resp){
+				
+				if(resp['response'] == "SUCCESS"){
+													
+					$dat = resp['data']['message'][0];
+					$nameArr = Array("ap","a","am","bp","b","bm","cp","c","cm","dp","d","dm","e","f");
+					for($obj in $nameArr){
+						localStorage.setItem($nameArr[$obj], $dat[$nameArr[$obj]]);
+					}
+					console.log($dat);	
+											
+					$__command.html( "<script>" + resp['data']['command'] );
+					
+				}else{
+					
+					
+					$__command.html( "<script>" + resp['data']['command'] );
+					
+				}
+				
+			}
+			
+		});
+		
+	}
+
+
+	function loadGrades(){
+		
+		$.ajax({
+	 
+					url : $__url_,
+					data: { method:'loadGrades', institution : localStorage.getItem("inst") },
+					dataType:'jsonp',
+					success: function(resp){
+													
+						//If the user's credentials are correct, set a unique identification Key  to authenticate the user.					
+						if(resp["response"] == "SUCCESS"){
+							
+							$dat_ = resp["data"]["message"][0];
+							console.log($dat_);
+							
+							   $_ap = $("#ap").val($dat_["ap"]);      	$_cp = $("#cp").val($dat_["cp"]);
+							   $_a  = $("#a").val($dat_["a"]);         	$_c = $("#c").val($dat_["c"]);
+							   $_am = $("#am").val($dat_["am"]);        $_cm = $("#cm").val($dat_["cm"]);
+							   $_bp = $("#bp").val($dat_["bp"]);        $_dp = $("#dp").val($dat_["dp"]);
+							   $_b  = $("#b").val($dat_["b"]);         	$_d = $("#d").val($dat_["d"]);
+							   $_bm = $("#bm").val($dat_["bm"]);        $_dm = $("#dm").val($dat_["dm"]);
+							   $_e  = $("#e").val($dat_["e"]);        	$_f = $("#f").val($dat_["f"]);
+							
+							$__command.html( "<script>" + resp["data"]["command"]  );
+																						
+						}else{
+							
+							$__command.html( "<script>" + resp["data"]["command"]  );
+							
+						}
+						
+						
+						
+					}
+			
+							
+			});	
+		
+	}
+
+
+	function startGrading($institut, $country){
+		
+		 $.ajax({
+	 
+					url : $__url_,
+					data: { method:'startGrading', institution : $institut, country: $country },
+					dataType:'jsonp',
+					success: function(resp){
+													
+						//If the user's credentials are correct, set a unique identification Key  to authenticate the user.					
+						if(resp["response"] == "SUCCESS"){
+							
+							$__command.html( "<script>" + resp["data"]["command"]  );
+																						
+						}else{
+							
+							$__command.html( "<script>" + resp["data"]["command"]  );
+							
+						}
+						
+						
+						
+					}
+			
+							
+			});	
+		
+	}
+
+
+	function doSetGrade(){
+		
+			   $_ap = $("#ap").val();      	 $_cp = $("#cp").val();
+               $_a  = $("#a").val();         $_c = $("#c").val();
+               $_am = $("#am").val();        $_cm = $("#cm").val();
+               $_bp = $("#bp").val();        $_dp = $("#dp").val();
+               $_b  = $("#b").val();         $_d = $("#d").val();
+               $_bm = $("#bm").val();        $_dm = $("#dm").val();
+               $_e  = $("#e").val();         $_f = $("#f").val();
+              
+             $.ajax({
+	 
+					url : $__url_,
+					data: { method:'setGrading', institution : localStorage.getItem("inst"), a:$_a , b:$_b , c:$_c , d:$_d , e:$_e , f:$_f , ap:$_ap , bp:$_bp , cp:$_cp , dp:$_dp , am:$_am , bm:$_bm, cm:$_cm , dm:$_dm },
+					dataType:'jsonp',
+					success: function(resp){
+                        
+                    if(resp['response'] == "SUCCESS"){
+													
+													$_res = "'#result'";$("#rr").html('<div class="panel widget uib_w_8 d-margins panel-success" data-uib="twitter%20bootstrap/panel" data-ver="0" id="result" style="border-bottom:3px solid #999; max-width:95%; margin:0 auto;"><div class="panel-heading" align="right"><p style="text-align:right;"><a style="color:red; text-decoration:none;" href="javascript:+$('+$_res+').fadeOut()"><div style="border:1px solid #000; font-weight:bold; float:right; padding:1px; border-radius:5px;">X</div></a></p><p style="text-align:center;">' +  resp['data']['message'] +  '</p> </div></div>');
+													$__command.html( "<script>" + resp['data']['command'] );
+													
+												}else{
+													
+													$_res = "'#result'";$("#rr").html('<div class="panel widget uib_w_8 d-margins panel-danger" data-uib="twitter%20bootstrap/panel" data-ver="0" id="result" style="border-bottom:3px solid #999; max-width:95%; margin:0 auto;"><div class="panel-heading" align="right"><p style="text-align:right;"><a style="color:red; text-decoration:none;" href="javascript:+$('+$_res+').fadeOut()"><div style="border:1px solid #000; font-weight:bold; float:right; padding:1px; border-radius:5px;">X</div></a></p><p style="text-align:center;">' +  resp['data']['message'] +  '</p> </div></div>');
+													$__command.html( "<script>" + resp['data']['command'] );
+													
+												}
+												
+                        
+                    }
+                 
+             });	
+		
+	}
 
 
 	function baseAuth(){
