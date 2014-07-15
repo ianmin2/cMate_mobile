@@ -7,16 +7,104 @@ css.type= "text/css";
 css.href= "mmenu/css/jquery.mmenu.css";
 
 
- //$__url_ = 'http://ianmin2.tk/insy214/php/CMBasics_proc.php';
- $__url_ = "http://eleanor/courses/php/CMBasics_proc.php";
+ $__url_ = 'http://ianmin2.tk/insy214/php/CMBasics_proc.php';
+ //$__url_ = "http://eleanor/courses/php/CMBasics_proc.php";
 $(function(){
+	
 	$__result 			= $("#rr");
 	$__command			= $("#command"); 
 	
 document.body.appendChild(js);
 document.body.appendChild(css);
 	//$("head").append("<link rel='stylesheet' href='style/style.css' >");	
+	
 });
+
+
+		
+	function getSubjects(){
+		
+		$.ajax({
+			url: $__url_,
+			data: {method: "getMyCourses", institution: localStorage.getItem("inst"), major: localStorage.getItem("major"), id: localStorage.getItem("id")},
+			dataType:"jsonp",
+			success: function(resp){
+				
+				$d_cours	= resp['data']['command']['done'];
+				$d_progr = resp['data']['message'];
+				
+				//localStorage.setItem("d_cours", JSON.stringify($d_cours));
+				//localStorage.setItem("d_progr", JSON.stringify($d_progr));
+				
+				doGrading($d_cours, $d_progr);
+				
+				//console.log(resp['data']['message']);
+				//console.log(resp['data']['command']['done']);
+			}	
+		});
+		
+	}
+	
+	
+	
+	function doGrading($d_cours, $d_progr){
+		
+		$_grading_ = {"a":localStorage.getItem("a") , "b":localStorage.getItem("b") , "c":localStorage.getItem("c") , "d":localStorage.getItem("d") , "e":localStorage.getItem("e") , "f":localStorage.getItem("f") , "a+":localStorage.getItem("ap") , "b+":localStorage.getItem("bp") , "c+":localStorage.getItem("cp") , "d+":localStorage.getItem("dp") , "a-":localStorage.getItem("am") , "b-":localStorage.getItem("bm") , "c-":localStorage.getItem("cm") , "d-":localStorage.getItem("dm") }
+		
+		//alert($_grading_['a']);
+		$grade_scor = Array();
+		$grade_weig = Array();
+		$grade_for  = Array();
+		//GET THE CREDITS EARNED ON THE COMPLETION OF A COURSE
+		for($obj in $d_progr){
+			
+			$garde = $d_progr[$obj]['grade'].toLowerCase();
+			//alert($garde);
+			if($_grading_[$garde] == null){$_grading_[$garde] = 0}
+			$grade_scor.push($_grading_[$garde]);			
+			
+		}
+		
+		//GET THE ACTUAL WEIGHT OF THE COURSE
+		for($obj in $d_cours){
+			
+			//alert($d_cours[$obj]['weight'] + " \n\n" + $d_cours[$obj]['name'] );
+			
+			$grade_weig.push($d_cours[$obj]['weight'] );
+			$grade_for.push($d_cours[$obj]['name']);
+			
+		}
+		
+		
+		myGPA($grade_scor, $grade_weig, $grade_for);
+				
+	}
+	
+	function myGPA(myScores, myWeights, myTitles){
+		
+		$resp_dat 	= "";
+		$_grade_p 	= 0;
+		$_credi_h 	= 0;
+		
+		for(i =0; i < myScores.length; i++){
+			
+			$resp_dat = $resp_dat + '<a class="list-group-item allow-badge widget uib_w_4" data-uib="twitter%20bootstrap/list_item" data-ver="0"><h4 class="list-group-item-heading">'+ myTitles[i]+'</h4><p class="list-group-item-text"><b>score:</b> '+ (myScores[i] * myWeights[i])  +'</p><p> <b>Weight:</b> ' + myWeights[i] + ' </p></a>';
+			
+			$_grade_p = $_grade_p  	+ (myScores[i] * myWeights[i]);
+			$_credi_h = $_credi_h	+  (myWeights[i] * 1 );
+			
+		}
+		
+		$_gpa_ =  ($_grade_p / $_credi_h);
+		
+		$resp_dat = $resp_dat + '<a class="list-group-item allow-badge widget uib_w_4" data-uib="twitter%20bootstrap/list_item" data-ver="0"><h4 class="list-group-item-heading"><code style="color:#F00;"><b>CUMULATIVE GPA</b></code></h4><p class="list-group-item-text"><b>GPA:</b><code style="color:navy;"> '+ $_gpa_ +' </code></p><p><b>Hours:</b> <code style="color:green;"> ' + $_credi_h + '</code> </p></a>';
+		$__result.html($resp_dat);
+		
+		
+		
+	}
+
+
 
 	function getGrading(){
 		
@@ -29,12 +117,15 @@ document.body.appendChild(css);
 				if(resp['response'] == "SUCCESS"){
 													
 					$dat = resp['data']['message'][0];
-					$nameArr = Array("ap","a","am","bp","b","bm","cp","c","cm","dp","d","dm","e","f");
+					
+					$nameArr = Array("ap","a","am","bp","b","bm","cp","c","cm","dp","d","dm","e","f","ng","dg");
+					
 					for($obj in $nameArr){
+						
 						localStorage.setItem($nameArr[$obj], $dat[$nameArr[$obj]]);
+						
 					}
-					console.log($dat);	
-											
+																
 					$__command.html( "<script>" + resp['data']['command'] );
 					
 				}else{
