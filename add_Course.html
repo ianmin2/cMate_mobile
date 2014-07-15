@@ -27,7 +27,7 @@
 			   //POST A REQUEST FOR ALL INSTITUTIONS WITHIN THAT COUNTRY		   
 			   $.ajax({
 					
-							url : 'http://localhost/courses/php/CMBasics_proc.php',
+							url : $__url_,
 							data: { method:"getInstitution", country:$country.val() },
 							dataType:'jsonp',
 							success: function(resp){
@@ -57,7 +57,7 @@
 	            
 									$.ajax({
 					
-														url : 'http://localhost/courses/php/CMBasics_proc.php',
+														url : $__url_,
 														data: { method:"getSchools", institution:$institution.val() },
 														dataType:'jsonp',
 														success: function(resp){
@@ -87,7 +87,7 @@
 																//FETCH THE LIST OF DEPARTMENTS
 																$.ajax({
 																	
-																		url : 'http://localhost/courses/php/CMBasics_proc.php',
+																		url : $__url_,
 																		data: { method:"getDepartments", institution:$institution.val() , school: $school.val() },
 																		dataType:'jsonp',
 																		success: function(resp){
@@ -148,7 +148,7 @@
 											if($institution.val() != "" && $("#major").val() != "" && $("#nom").val() != "" && $("#course").val() != "" && $("#weight").val() != ""){
 												
 												$.ajax({				
-														url : 'http://localhost/courses/php/CMBasics_proc.php',
+														url : $__url_,
 														data: { method:"addCourse", nom:$("#nom").val(), grade:$("#weight").val(),  institution:$institution.val(), department: $("#department").val(), course: $("#course").val() },
 														dataType:'jsonp',
 														success: function(resp){
